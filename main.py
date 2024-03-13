@@ -54,10 +54,10 @@ class Main(tk.Tk):
         self.db = Database('user.db')
         self.db.setup()
 
-        self.insert_button = tk.Button(self, text="Insert New Application", command=self.insert_window) # Stack on top
+        self.insert_button = tk.Button(self, text="Insert New Application", command=self.open_insert_window) # Stack on top
         self.insert_button.place(relx=0.5, rely=0.5, anchor="center")
 
-    def insert_window(self):
+    def open_insert_window(self):
         self.window = tk.Toplevel(self) # Create new window
         self.window.geometry("250x250")
         self.insert_frame = InsertApp(self.window, self)
