@@ -23,8 +23,7 @@ class Database:
                         ''')
         self.conn.commit()
 
-    def insert_app(self, conn, job_title, company, location):
-
+    def insert_app_db(self, conn, job_title, company, location):
 
         today = datetime.date.today() # Set today's date
         status = 'Active' # Set application status to active
@@ -35,17 +34,15 @@ class Database:
                 ''', (job_title, company, location, today, status, id))
         self.conn.commit()
 
-    def delete_app(self, id):
-        self.c.execute('''DELETE *
+    def remove_app_db(self, id):
+        self.c.execute('''DELETE
                        FROM applications
                        WHERE id = ?;
                        ''', (id,))
         self.conn.commit()
     
-    def display_all(self):
+    def display_all_db(self):
         self.c.execute('''SELECT * 
                        FROM applications''')
         rows = self.c.fetchall()
         return rows
-
-# def view_app()

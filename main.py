@@ -1,7 +1,7 @@
 import tkinter as tk
+from tkinter import ttk
 from database import *
 
-# Main app
 class InsertApp(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -25,6 +25,8 @@ class InsertApp(tk.Frame):
 
         insert_button = tk.Button(self, text="Add Application", command=self.insert_data)
         insert_button.grid(row=3, column=1)
+
+        self.location_entry.bind('<Return>', lambda event: self.insert_data())
     
     def insert_data(self):
 
@@ -32,20 +34,52 @@ class InsertApp(tk.Frame):
         company = self.company_entry.get()
         location = self.location_entry.get()
 
-        app.db.insert_app(self, job, company, location)
+        app.db.insert_app_db(self, job, company, location)
+        self.controller.update_treeview()
+
 
         self.job_title_entry.delete(0, 'end')
         self.company_entry.delete(0,'end')
         self.location_entry.delete(0,'end')
 
+        success_label = tk.Label(self.controller, text="Insertion successful.")
+        success_label.pack()
+        self.controller.window.destroy()
+
+class DeleteApp(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        self.delete_label = tk.Label(self, text="Enter Job ID to Delete: ")
+        self.delete_label.grid(row=1,column=1)
+        self.delete_entry = tk.Entry(self)
+        self.delete_entry.grid(row=1, column=2)
+        self.delete_entry.bind('<Return>', lambda event: self.delete_app()) # User can press Enter instead of a button.
+
+
+    def delete_app(self):
+
+        job_id = self.delete_entry.get()
+        
+        app.db.remove_app_db(job_id)
+
+        self.controller.update_treeview()
+
+        self.delete_entry.delete(0,'end')
+
+        success_label = tk.Label(self.controller, text="Deletion successful.")
+        success_label.pack()
+        self.controller.window.destroy()
 
 class Main(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title('AppTrack')
-        self.geometry("500x500")
+        self.geometry("800x500")
 
-        self.welcome_msg = tk.Label(self, text = "Welcome to AppTrack")
+        self.welcome_msg = tk.Label(self, text = "Welcome to AppTrack! \nHere are your active applications.")
         self.welcome_msg.pack(pady=20)
 
         self.container = tk.Frame(self)
@@ -54,14 +88,39 @@ class Main(tk.Tk):
         self.db = Database('user.db')
         self.db.setup()
 
+        self.tree = ttk.Treeview(self.container, columns=('Title', 'Company', 'Location', 'ID'), show='headings')
+        self.tree.heading('Title', text='Title')
+        self.tree.heading('Company', text='Company')
+        self.tree.heading('Location', text='Location')
+        self.tree.heading('ID', text='Job ID')
+        self.tree.pack()
+
         self.insert_button = tk.Button(self, text="Insert New Application", command=self.open_insert_window) # Stack on top
-        self.insert_button.place(relx=0.5, rely=0.5, anchor="center")
+        self.insert_button.place(relx=0.5, rely=0.65, anchor="center")
+
+        self.delete_button = tk.Button(self, text="Delete Existing Application", command=self.open_delete_window) # Stack on top
+        self.delete_button.place(relx=0.5, rely=0.8, anchor="center")
+
+        self.update_treeview()
 
     def open_insert_window(self):
         self.window = tk.Toplevel(self) # Create new window
-        self.window.geometry("250x250")
+        self.window.geometry("240x100")
         self.insert_frame = InsertApp(self.window, self)
-        self.insert_frame.pack(fill="both", expand=True)
+        self.insert_frame.pack(fill="both", expand=False)
+    
+    def open_delete_window(self):
+        self.window = tk.Toplevel(self) # Create new window
+        self.window.geometry("250x30")
+        self.insert_frame = DeleteApp(self.window, self)
+        self.insert_frame.pack(fill="both", expand=False)
+
+    def update_treeview(self):
+        for i in self.tree.get_children():
+            self.tree.delete(i)  # Clear the treeview
+        apps = self.db.display_all_db()
+        for app in apps:
+            self.tree.insert('', 'end', values=(app[0],app[1], app[2], app[5]))
 
 
 app = Main()
