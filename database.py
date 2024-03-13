@@ -46,3 +46,11 @@ class Database:
                        FROM applications''')
         rows = self.c.fetchall()
         return rows
+    
+    def display_specific_db(self, id):
+        self.c.execute('''SELECT *
+                       FROM applications
+                       WHERE id = ?;
+                       ''', (id, ))
+        rows = self.c.fetchall()
+        return rows
