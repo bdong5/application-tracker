@@ -17,11 +17,6 @@ class ViewApp(tk.Frame):
 
         self.jid_entry.bind('<Return>', lambda event: self.view_app())
 
-
-    # def view_app(self):
-    #     id = self.jid_entry.get()
-    #     rows = app.db.display_specific_db(id)
-
     def view_app(self):
         
         id = self.jid_entry.get()
