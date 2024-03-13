@@ -2,6 +2,51 @@ import tkinter as tk
 from tkinter import ttk
 from database import *
 
+class ViewApp(tk.Frame):
+
+    def __init__(self,parent,controller):
+
+        tk.Frame.__init__(self,parent)
+        self.controller = controller
+
+        self.jid = tk.Label(self,text="Job ID: ")
+        self.jid.grid(row=0,column=0)
+        
+        self.jid_entry = tk.Entry(self)
+        self.jid_entry.grid(row=0, column=1)
+
+        self.jid_entry.bind('<Return>', lambda event: self.view_app())
+
+
+    # def view_app(self):
+    #     id = self.jid_entry.get()
+    #     rows = app.db.display_specific_db(id)
+
+    def view_app(self):
+        
+        id = self.jid_entry.get()
+        rows = app.db.display_specific_db(id)
+
+        for row in rows:
+            window = tk.Toplevel(self) # Create new window
+            window.geometry("300x150") # Set the geometry as per your requirements
+            job_frame = tk.Frame(window) # Create a new frame
+            job_frame.pack(fill="both", expand=True) # Pack the frame
+
+            # Add the job details to the frame
+            job_label = tk.Label(job_frame, text=f"Job Title: {row[0]}")
+            job_label.pack()
+            company_label = tk.Label(job_frame, text=f"Company: {row[1]}")
+            company_label.pack()
+            location_label = tk.Label(job_frame, text=f"Location: {row[2]}")
+            location_label.pack()
+            date_label = tk.Label(job_frame, text=f"Date: {row[3]}")
+            date_label.pack()
+            status_label = tk.Label(job_frame, text=f"Status: {row[4]}")
+            status_label.pack()
+
+
+
 class InsertApp(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -42,8 +87,9 @@ class InsertApp(tk.Frame):
         self.company_entry.delete(0,'end')
         self.location_entry.delete(0,'end')
 
-        success_label = tk.Label(self.controller, text="Insertion successful.")
-        success_label.pack()
+        self.success_label = tk.Label(self.controller, text="Insertion successful.")
+        self.success_label.pack()
+        self.controller.after(2000, self.success_label.destroy) # Message disappears after two second delay
         self.controller.window.destroy()
 
 class DeleteApp(tk.Frame):
@@ -69,12 +115,16 @@ class DeleteApp(tk.Frame):
 
         self.delete_entry.delete(0,'end')
 
-        success_label = tk.Label(self.controller, text="Deletion successful.")
-        success_label.pack()
+        self.success_label = tk.Label(self.controller, text="Deletion successful.")
+        self.success_label.pack()
+        self.controller.after(2000, self.success_label.destroy) # Message disappears after two second delay
+
         self.controller.window.destroy()
 
 class Main(tk.Tk):
+
     def __init__(self):
+
         tk.Tk.__init__(self)
         self.title('AppTrack')
         self.geometry("800x500")
@@ -96,11 +146,13 @@ class Main(tk.Tk):
         self.tree.pack()
 
         self.insert_button = tk.Button(self, text="Insert New Application", command=self.open_insert_window) # Stack on top
-        self.insert_button.place(relx=0.5, rely=0.65, anchor="center")
+        self.insert_button.place(relx=0.5, rely=0.7, anchor="center")
 
         self.delete_button = tk.Button(self, text="Delete Existing Application", command=self.open_delete_window) # Stack on top
         self.delete_button.place(relx=0.5, rely=0.8, anchor="center")
 
+        self.view_button = tk.Button(self, text="View Exisiting Application", command=self.open_view_window)
+        self.view_button.place(relx=0.5, rely=0.9, anchor = "center")
         self.update_treeview()
 
     def open_insert_window(self):
@@ -112,15 +164,23 @@ class Main(tk.Tk):
     def open_delete_window(self):
         self.window = tk.Toplevel(self) # Create new window
         self.window.geometry("250x30")
-        self.insert_frame = DeleteApp(self.window, self)
-        self.insert_frame.pack(fill="both", expand=False)
+        self.delete_frame = DeleteApp(self.window, self)
+        self.delete_frame.pack(fill="both", expand=False)
+    
+    def open_view_window(self):
+        self.window = tk.Toplevel(self) # Create new window
+        self.window.geometry("250x30")
+        self.view_frame = ViewApp(self.window,self)
+        self.view_frame.pack(fill="both", expand = False)
 
+        
     def update_treeview(self):
         for i in self.tree.get_children():
             self.tree.delete(i)  # Clear the treeview
         apps = self.db.display_all_db()
         for app in apps:
             self.tree.insert('', 'end', values=(app[0],app[1], app[2], app[5]))
+
 
 
 app = Main()
