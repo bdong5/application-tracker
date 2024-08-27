@@ -1,33 +1,68 @@
-# AppTrack
+# Application Tracker
 
-AppTrack helps users manage and keep track of their job applications. AppTrack keeps track of job titles, companies applied to, location, and application date. It allows the user to stay organized and simplifies the task of managing multiple applications. AppTrack utilizes both Python and SQLite.
+## Overview
 
-Main screen: The user can view their active applications, insert, delete, or view a specific appliation.
+The Application Tracker is a Python-based desktop application designed to help users manage and track their job applications efficiently. The application allows users to insert, delete, and view specific job applications, providing a streamlined and organized approach to job hunting.
 
-<img width="598" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/1af76bbf-8e0d-4488-a95d-e188612f6271">
+## Features
 
----
-<b>Insert New Application:</b>
+- **Add New Applications**: Easily insert new job applications with relevant details such as company name, position, date applied, and application status.
+- **Manage Applications**: Update or delete existing applications, keeping your job search organized and up-to-date.
+- **Search and Filter**: Quickly find specific applications based on criteria like company name or application status.
+- **User-Friendly Interface**: Designed with Tkinter, the application offers a simple and intuitive interface for ease of use.
+- **Database Management**: Utilizes SQLite for reliable and secure storage of application data.
 
-When clicked, a pop up window prompts the user to enter new application details, which is then added to the database. A successful insertion is denoted by a success message.
+## Technologies Used
 
-<img width="181" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/224229d2-3b34-4976-a9fb-0ac1d7e8ebaf"> --> <img width="602" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/596a02b5-635b-413f-8d81-7861186675ba">
+- **Python**: Core programming language used for developing the application.
+- **Tkinter**: Python's standard GUI (Graphical User Interface) package, used to design the application's interface.
+- **SQLite**: A lightweight, file-based database system used for storing application data.
 
----
-<b>Delete Existing Appliation:</b>
+## Installation
 
-When clicked, a pop up window prompts the user to enter the ID of the application they'd like to delete. A successful deletion is denoted by a success message.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/bdong5/application-tracker.git
+   ```
+2. **Navigate to the Project Directory**:
+   ```bash
+   cd application-tracker
+   ```
+3. **Install Dependencies** (if any):
+   ```bash
+   pip install -r requirements.txt
+   ```
+   *(Note: If no `requirements.txt` exists, ensure that Python and Tkinter are installed on your system.)*
 
-<img width="190" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/78fe6452-4640-4232-ab93-c325d0aacd4a">
--->
-<img width="600" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/678539b4-ce0d-4d53-bc71-df67ed88959d">
+4. **Run the Application**:
+   ```bash
+   python app.py
+   ```
 
----
-<b>View Existing Application:</b>
+## Usage
 
-When clicked, a pop up window prompts the user to enter the ID of the application they'd like to view.
+- **Adding a New Application**: Click on the "Add Application" button and fill in the required details in the form. Once completed, click "Save" to add the application to the database.
+- **Viewing Applications**: The main window displays a list of all stored applications. You can sort, filter, or search through this list.
+- **Editing/Deleting Applications**: Select an application from the list and choose "Edit" to modify its details or "Delete" to remove it from the database.
 
-<img width="186" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/ddd3c8d4-5787-47d8-a238-8ceea5c0ada2">
---> <img width="226" alt="image" src="https://github.com/bdong5/AppTrack/assets/145633419/e1145ea4-60ff-4532-9ee0-9f90b2e8cb5c">
+## Screenshots
 
+*(Include screenshots of the application here if available)*
 
+## Contributing
+
+If you would like to contribute to the Application Tracker project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+If you have any questions or suggestions regarding the Application Tracker, feel free to contact me!
